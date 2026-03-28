@@ -151,18 +151,14 @@ export default function HomePage() {
 
   return (
     <div className="app-container">
+      {/* Premium Hero Section */}
       <div className="hero-section">
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0A1628, #1A2A3E)' }} />
-        <div className="hero-content"><div className="hero-logo">GAIA</div><div className="hero-tagline">Smart Logistics</div></div>
-      </div>
-
-      {stats && (
-        <div className="stats-banner">
-          <div className="stat-item"><div className="stat-value">{stats.active_routes?.toLocaleString()}+</div><div className="stat-label">Routes</div></div>
-          <div className="stat-divider" />
-          <div className="stat-item"><div className="stat-value">{stats.transport_companies?.toLocaleString()}+</div><div className="stat-label">Companies</div></div>
+        <div className="hero-glow" />
+        <div className="hero-content">
+          <div className="hero-logo">GAIA</div>
+          <div className="hero-tagline">Smart Logistics Platform</div>
         </div>
-      )}
+      </div>
 
       <div className="form-card">
         <div className="form-title">Find Capacity</div>

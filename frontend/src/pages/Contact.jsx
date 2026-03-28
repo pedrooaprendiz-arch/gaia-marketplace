@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Navigation, Phone, Mail, MessageSquare, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Navigation, CheckCircle, Zap } from 'lucide-react';
 import './Contact.css';
 
 export default function ContactPage() {
@@ -10,46 +10,67 @@ export default function ContactPage() {
   const data = JSON.parse(decodeURIComponent(searchParams.get('data') || '{}'));
   const { fromCity, toCity, offer, finalPrice, includeInsurance } = data;
 
+  const handleProceed = () => {
+    navigate('/published', { state: { ...data } });
+  };
+
   return (
     <div className="app-container">
       <div className="contact-header">
-        <button className="back-btn" onClick={() => navigate(-1)}><ArrowLeft size={24} /></button>
-        <div className="contact-title">Contact Transporter</div>
+        <button className="back-btn" onClick={() => navigate(-1)} data-testid="back-btn">
+          <ArrowLeft size={24} />
+        </button>
+        <div className="contact-title">Confirmation</div>
       </div>
 
       <div className="contact-content">
+        {/* Success Badge */}
         <div className="contact-success">
-          <CheckCircle size={48} color="#4AE24A" />
-          <div className="success-title">Direct Contact Setup</div>
-          <div className="success-subtitle">GAIA connects you directly with verified providers</div>
+          <div className="success-icon-wrapper">
+            <CheckCircle size={40} color="#4AE24A" />
+          </div>
+          <div className="success-title">Shipment Ready</div>
+          <div className="success-subtitle">Your request has been matched</div>
         </div>
 
+        {/* Route Summary Card */}
         <div className="contact-card">
-          <div className="company-name">{offer?.company?.name || 'Transport Company'}</div>
-          <div className="contact-route">
-            <span><MapPin size={14} color="#4A90E2" /> {fromCity}</span>
-            <span>→</span>
-            <span><Navigation size={14} color="#4AE24A" /> {toCity}</span>
+          <div className="contact-route-summary">
+            <div className="route-endpoint">
+              <MapPin size={18} color="#4A90E2" />
+              <span>{fromCity}</span>
+            </div>
+            <div className="route-arrow">→</div>
+            <div className="route-endpoint">
+              <Navigation size={18} color="#4AE24A" />
+              <span>{toCity}</span>
+            </div>
           </div>
-          <div className="contact-price">
-            <span>Quoted Price</span>
+          <div className="contact-price-summary">
+            <span className="price-label">Total</span>
             <span className="price-value">€{finalPrice?.min || 0} – €{finalPrice?.max || 0}</span>
           </div>
-          {includeInsurance && <div style={{ fontSize: 12, color: '#4AE24A', marginTop: 8 }}>✓ Insurance included</div>}
+          {includeInsurance && (
+            <div className="insurance-badge">
+              <CheckCircle size={14} color="#4AE24A" />
+              <span>GAIA Smart Insurance included</span>
+            </div>
+          )}
         </div>
 
-        <div className="contact-card">
-          <div className="contact-person-title">Contact Person</div>
-          <div className="contact-person-name">Maria Santos</div>
-          <div className="contact-person-role">Operations Manager</div>
-          <div className="contact-actions">
-            <a href="tel:+351912345678" className="contact-action-btn call"><Phone size={18} /><span>Call</span></a>
-            <a href="mailto:contact@transeuropa.eu" className="contact-action-btn email"><Mail size={18} /><span>Email</span></a>
-            <button className="contact-action-btn message"><MessageSquare size={18} /><span>Message</span></button>
+        {/* Provider Card - Clean Platform Style */}
+        <div className="contact-card provider-card">
+          <div className="provider-company">{offer?.company?.name || 'Transport Company'}</div>
+          <div className="provider-match">
+            <Zap size={16} color="#4AE24A" />
+            <span>Smart Match Ready</span>
           </div>
         </div>
 
-        <button className="done-btn" onClick={() => navigate('/')}>Back to Home</button>
+        {/* Single CTA Button */}
+        <button className="proceed-btn" onClick={handleProceed} data-testid="proceed-btn">
+          Proceed
+        </button>
       </div>
     </div>
   );

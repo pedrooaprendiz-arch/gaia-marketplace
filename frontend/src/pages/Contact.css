@@ -1,28 +1,42 @@
+/* Contact Page - Premium Investor-Ready Design */
+
 .contact-header {
   display: flex;
   align-items: center;
   padding: 20px;
-  background-color: var(--bg-secondary);
+  background: rgba(26, 42, 62, 0.6);
+  backdrop-filter: blur(10px);
 }
 
 .contact-title {
   font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-left: 12px;
+  margin-left: 16px;
 }
 
 .contact-content {
-  padding: 20px;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+/* Success Section */
 .contact-success {
   text-align: center;
-  padding: 30px 20px;
+  padding: 32px 20px;
 }
 
-.success-icon {
-  margin-bottom: 16px;
+.success-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  background: rgba(74, 226, 74, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .success-title {
@@ -37,45 +51,46 @@
   color: var(--text-secondary);
 }
 
+/* Cards - Premium Glass Effect */
 .contact-card {
-  background-color: var(--bg-secondary);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.company-name {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-}
-
-.contact-route {
+/* Route Summary */
+.contact-route-summary {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.contact-route-point {
+.route-endpoint {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--text-primary);
 }
 
-.contact-route-arrow {
+.route-arrow {
   color: var(--text-secondary);
+  font-size: 18px;
 }
 
-.contact-price {
+/* Price Summary */
+.contact-price-summary {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 16px;
-  border-top: 1px solid #2A3A4E;
 }
 
 .price-label {
@@ -84,92 +99,70 @@
 }
 
 .price-value {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #4AE24A;
 }
 
-.contact-person-title {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-
-.contact-person-name {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.contact-person-role {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-}
-
-.contact-actions {
+/* Insurance Badge */
+.insurance-badge {
   display: flex;
-  gap: 12px;
-}
-
-.contact-action-btn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 16px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 16px;
+  background: rgba(74, 226, 74, 0.08);
+  border: 1px solid rgba(74, 226, 74, 0.2);
+  border-radius: 10px;
   font-size: 13px;
-  font-weight: 600;
+  color: #4AE24A;
 }
 
-.contact-action-btn.call {
-  background-color: rgba(74, 226, 74, 0.15);
-  color: var(--accent-green);
+/* Provider Card */
+.provider-card {
+  text-align: center;
+  border: 1px solid rgba(74, 226, 74, 0.15);
 }
 
-.contact-action-btn.email {
-  background-color: rgba(74, 144, 226, 0.15);
-  color: var(--accent-blue);
-}
-
-.contact-action-btn.message {
-  background-color: rgba(123, 104, 238, 0.15);
-  color: var(--accent-purple);
-}
-
-.contact-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background-color: rgba(74, 144, 226, 0.1);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-.note-icon {
+.provider-company {
   font-size: 20px;
-}
-
-.note-text {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.done-btn {
-  width: 100%;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--accent-blue);
-  border-radius: 14px;
-  padding: 18px;
-  color: var(--accent-blue);
-  font-size: 17px;
   font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.provider-match {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(74, 226, 74, 0.1);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4AE24A;
+}
+
+/* Proceed Button - Premium CTA */
+.proceed-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #4AE24A, #2bb673);
+  border: none;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: white;
   cursor: pointer;
+  box-shadow: 0 8px 24px rgba(74, 226, 74, 0.35);
+  margin-top: 8px;
+}
+
+.proceed-btn:hover {
+  box-shadow: 0 10px 28px rgba(74, 226, 74, 0.45);
+}
+
+.proceed-btn:active {
+  transform: scale(0.98);
 }
