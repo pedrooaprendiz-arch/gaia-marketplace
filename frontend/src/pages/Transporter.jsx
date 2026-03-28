@@ -217,12 +217,14 @@ export default function TransporterPage() {
 
           <div className="form-group">
             <div className="form-label">Departure Date</div>
-            <div className="form-input-wrapper">
-              <Calendar size={18} color="#6B7B8F" />
+            <div className="form-input-wrapper date-input-wrapper" onClick={() => document.getElementById('departure-date-input').showPicker()}>
+              <Calendar size={18} color="#4A90E2" />
               <input
+                id="departure-date-input"
                 type="date"
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e.target.value)}
+                className="date-input"
               />
             </div>
           </div>

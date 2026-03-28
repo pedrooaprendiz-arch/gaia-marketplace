@@ -7,6 +7,7 @@ import ProposalPage from './pages/Proposal';
 import ContactPage from './pages/Contact';
 import TransporterPage from './pages/Transporter';
 import RoutePublishedPage from './pages/RoutePublished';
+import RequestSubmittedPage from './pages/RequestSubmitted';
 import PricingPage from './pages/Pricing';
 import './index.css';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/transporter" element={<TransporterPage />} />
           <Route path="/route-published" element={<RoutePublishedPage />} />
+          <Route path="/request-submitted" element={<RequestSubmittedPage />} />
           <Route path="/pricing" element={<PricingPage />} />
         </Routes>
       </PasswordGate>

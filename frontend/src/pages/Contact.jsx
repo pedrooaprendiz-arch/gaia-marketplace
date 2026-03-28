@@ -11,7 +11,7 @@ export default function ContactPage() {
   const { fromCity, toCity, offer, finalPrice, includeInsurance } = data;
 
   const handleProceed = () => {
-    navigate('/published', { state: { ...data } });
+    navigate('/request-submitted');
   };
 
   return (
