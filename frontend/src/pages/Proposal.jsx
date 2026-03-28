@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Navigation, Shield, Clock } from 'lucide-react';
+import { ArrowLeft, MapPin, Navigation, Shield, Clock, ShieldCheck, Star, Award, Check } from 'lucide-react';
 import { calculateGaiaPrice, BOX_PRICE_TIERS } from '../utils/pricing';
 import './Proposal.css';
 
-const INSURANCE_COST = 25;
+// Insurance pricing based on type and declared value
+const INSURANCE_RATES = {
+  basic: 0.015,    // 1.5% of declared value
+  standard: 0.025, // 2.5% of declared value  
+  premium: 0.04    // 4% of declared value
+};
+
+const INSURANCE_MIN = {
+  basic: 15,
+  standard: 25,
+  premium: 45
+};
 
 export default function ProposalPage() {
   const [searchParams] = useSearchParams();
@@ -12,8 +23,19 @@ export default function ProposalPage() {
   const [includeInsurance, setIncludeInsurance] = useState(false);
 
   const data = JSON.parse(decodeURIComponent(searchParams.get('data') || '{}'));
-  const { shipmentType, fromCity, toCity, distance, smallBoxQty, mediumBoxQty, largeBoxQty, palletQty, palletWeight, loadType, vehicleType, vehicleQty, movingBoxes, largeItems, complexity, offer } = data;
+  const { shipmentType, fromCity, toCity, distance, smallBoxQty, mediumBoxQty, largeBoxQty, palletQty, palletWeight, loadType, vehicleType, vehicleQty, movingBoxes, largeItems, complexity, offer, insurance_selected, insurance_type, declared_goods_value } = data;
   const optimization = offer?.optimization || 'optimized';
+  
+  // Calculate insurance cost based on user selection from Home page
+  const calculateInsuranceCost = () => {
+    if (!insurance_selected || !declared_goods_value) return 0;
+    const rate = INSURANCE_RATES[insurance_type] || INSURANCE_RATES.standard;
+    const minCost = INSURANCE_MIN[insurance_type] || INSURANCE_MIN.standard;
+    const calculatedCost = Math.round(declared_goods_value * rate);
+    return Math.max(calculatedCost, minCost);
+  };
+  
+  const insuranceCostFromHome = calculateInsuranceCost();
 
   // Calculate breakdown using STRICT pricing
   const getBreakdown = () => {
@@ -115,11 +137,34 @@ export default function ProposalPage() {
   };
 
   const { lines, subtotal } = getBreakdown();
-  const insuranceCost = includeInsurance ? INSURANCE_COST : 0;
-  const total = { min: subtotal.min + insuranceCost, max: subtotal.max + insuranceCost };
+  // Use insurance from Home page if selected, otherwise allow adding here
+  const totalInsuranceCost = insurance_selected ? insuranceCostFromHome : (includeInsurance ? 25 : 0);
+  const total = { min: subtotal.min + totalInsuranceCost, max: subtotal.max + totalInsuranceCost };
 
   const handleContinue = () => {
-    navigate(`/contact?data=${encodeURIComponent(JSON.stringify({ ...data, finalPrice: total, includeInsurance }))}`);
+    navigate(`/contact?data=${encodeURIComponent(JSON.stringify({ 
+      ...data, 
+      finalPrice: total, 
+      includeInsurance: insurance_selected || includeInsurance,
+      finalInsuranceCost: totalInsuranceCost
+    }))}`);
+  };
+  
+  // Insurance type display info
+  const getInsuranceIcon = () => {
+    switch(insurance_type) {
+      case 'basic': return <Shield size={20} color="#4ECDC4" />;
+      case 'premium': return <Star size={20} color="#FFD700" fill="#FFD700" />;
+      default: return <Award size={20} color="#4A90E2" />;
+    }
+  };
+  
+  const getInsuranceColor = () => {
+    switch(insurance_type) {
+      case 'basic': return '#4ECDC4';
+      case 'premium': return '#FFD700';
+      default: return '#4A90E2';
+    }
   };
 
   return (
@@ -157,15 +202,72 @@ export default function ProposalPage() {
           </div>
         </div>
 
-        <div className="proposal-card">
-          <div className="insurance-section">
-            <div className="insurance-header"><Shield size={18} color="#4A90E2" /><span>Cargo Insurance</span></div>
-            <div className="insurance-toggle">
-              <span>+€{INSURANCE_COST}</span>
-              <label className="toggle"><input type="checkbox" checked={includeInsurance} onChange={e => setIncludeInsurance(e.target.checked)} /><span className="toggle-slider"></span></label>
+        {/* Insurance Card - Show selected insurance or allow adding */}
+        {insurance_selected ? (
+          <div className="proposal-card" style={{ 
+            background: `linear-gradient(135deg, ${getInsuranceColor()}15, ${getInsuranceColor()}08)`,
+            border: `1px solid ${getInsuranceColor()}40`
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 10,
+                  background: `${getInsuranceColor()}25`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {getInsuranceIcon()}
+                </div>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: getInsuranceColor(), textTransform: 'capitalize' }}>
+                    {insurance_type} Coverage
+                  </div>
+                  <div style={{ fontSize: 12, color: '#6B7B8F', marginTop: 2 }}>
+                    Cargo Insurance Active
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <ShieldCheck size={16} color="#4AE24A" />
+                <span style={{ color: '#4AE24A', fontSize: 12, fontWeight: 600 }}>Protected</span>
+              </div>
+            </div>
+            
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center',
+              padding: '12px 14px',
+              background: 'rgba(10,22,40,0.5)',
+              borderRadius: 10
+            }}>
+              <div>
+                <div style={{ fontSize: 12, color: '#6B7B8F' }}>Declared Value</div>
+                <div style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>€{declared_goods_value?.toLocaleString()}</div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: 12, color: '#6B7B8F' }}>Insurance Cost</div>
+                <div style={{ fontSize: 16, fontWeight: 600, color: getInsuranceColor() }}>+€{insuranceCostFromHome}</div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="proposal-card">
+            <div className="insurance-section">
+              <div className="insurance-header"><Shield size={18} color="#4A90E2" /><span>Add Cargo Insurance</span></div>
+              <div className="insurance-toggle">
+                <span>+€25</span>
+                <label className="toggle"><input type="checkbox" checked={includeInsurance} onChange={e => setIncludeInsurance(e.target.checked)} /><span className="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div style={{ fontSize: 12, color: '#6B7B8F', marginTop: 10 }}>
+              Basic coverage for standard shipments
+            </div>
+          </div>
+        )}
 
         <div className="proposal-card total-card">
           <div>Total</div>

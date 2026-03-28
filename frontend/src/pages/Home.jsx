@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { MapPin, Navigation, Box, Layers, Car, Home as HomeIcon, Search, Truck, Crown, ChevronRight, Plus, Minus, CheckCircle, Route, Check } from 'lucide-react';
+import { MapPin, Navigation, Box, Layers, Car, Home as HomeIcon, Search, Truck, Crown, ChevronRight, Plus, Minus, CheckCircle, Route, Check, Shield, ShieldCheck, Zap, Award, Star } from 'lucide-react';
 import { calculateGaiaPrice, getDistance, GAIA_UI, GAIA_BOX_UI, GAIA_PALLET_UI, GAIA_MOVING_UI, GAIA_CTA } from '../utils/pricing';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -57,6 +57,11 @@ export default function HomePage() {
   const [movingBoxes, setMovingBoxes] = useState(10);
   const [largeItems, setLargeItems] = useState(3);
   const [movingHandling, setMovingHandling] = useState([]); // Multi-select: ['stairs', 'fragile']
+
+  // Insurance state
+  const [insuranceEnabled, setInsuranceEnabled] = useState(false);
+  const [insuranceType, setInsuranceType] = useState('standard');
+  const [declaredValue, setDeclaredValue] = useState('');
 
   useEffect(() => { fetchStats(); }, []);
 
@@ -134,7 +139,11 @@ export default function HomePage() {
       vehicleType, vehicleQty,
       // Moving
       movingBoxes, largeItems, 
-      handling: movingHandling
+      handling: movingHandling,
+      // Insurance
+      insurance_selected: insuranceEnabled,
+      insurance_type: insuranceEnabled ? insuranceType : null,
+      declared_goods_value: insuranceEnabled && declaredValue ? parseFloat(declaredValue) : null
     };
     navigate(`/results?data=${encodeURIComponent(JSON.stringify(shipmentData))}`);
   };
@@ -306,6 +315,347 @@ export default function HomePage() {
           <div style={{ background: '#1A2A3E', borderRadius: 12, padding: 16, marginTop: 16, textAlign: 'center' }}>
             <div style={{ fontSize: 12, color: '#6B7B8F' }}>Estimated</div>
             <div style={{ fontSize: 22, fontWeight: 700, color: '#4AE24A' }}>€{estimate.min} – €{estimate.max}</div>
+          </div>
+        )}
+
+        {/* Premium Insurance Section */}
+        {isFormValid() && (
+          <div className="insurance-premium-section" style={{ marginTop: 20 }}>
+            {/* Insurance Toggle Header */}
+            <div 
+              className="insurance-toggle-header"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                background: insuranceEnabled 
+                  ? 'linear-gradient(135deg, rgba(74,144,226,0.15), rgba(78,205,196,0.1))' 
+                  : '#0F1C2E',
+                border: insuranceEnabled ? '1px solid rgba(74,144,226,0.4)' : '1px solid #2A3A4E',
+                borderRadius: insuranceEnabled ? '16px 16px 0 0' : 16,
+                padding: '16px 18px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onClick={() => setInsuranceEnabled(!insuranceEnabled)}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: 12,
+                  background: insuranceEnabled ? 'rgba(74,144,226,0.2)' : 'rgba(107,123,143,0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <ShieldCheck size={22} color={insuranceEnabled ? '#4A90E2' : '#6B7B8F'} />
+                </div>
+                <div>
+                  <div style={{ 
+                    fontSize: 15, 
+                    fontWeight: 600, 
+                    color: insuranceEnabled ? '#fff' : '#9BA8B9'
+                  }}>
+                    Cargo Insurance
+                  </div>
+                  <div style={{ fontSize: 12, color: '#6B7B8F', marginTop: 2 }}>
+                    {insuranceEnabled ? 'Protection active' : 'Optional protection for your shipment'}
+                  </div>
+                </div>
+              </div>
+              <div style={{
+                width: 52,
+                height: 28,
+                borderRadius: 14,
+                background: insuranceEnabled ? '#4A90E2' : '#2A3A4E',
+                position: 'relative',
+                transition: 'all 0.3s ease'
+              }}>
+                <div style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: 11,
+                  background: '#fff',
+                  position: 'absolute',
+                  top: 3,
+                  left: insuranceEnabled ? 27 : 3,
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                }} />
+              </div>
+            </div>
+
+            {/* Expanded Insurance Panel */}
+            {insuranceEnabled && (
+              <div style={{
+                background: 'linear-gradient(180deg, rgba(15,28,46,0.95), #0F1C2E)',
+                border: '1px solid rgba(74,144,226,0.4)',
+                borderTop: 'none',
+                borderRadius: '0 0 16px 16px',
+                padding: '20px 18px',
+                animation: 'slideDown 0.3s ease'
+              }}>
+                {/* Declared Value Input */}
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ 
+                    display: 'block', 
+                    fontSize: 13, 
+                    color: '#9BA8B9', 
+                    marginBottom: 8,
+                    fontWeight: 500
+                  }}>
+                    Declared Cargo Value
+                  </label>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: '#0A1628',
+                    borderRadius: 12,
+                    border: '1px solid #2A3A4E',
+                    overflow: 'hidden'
+                  }}>
+                    <span style={{ 
+                      padding: '14px 16px', 
+                      background: 'rgba(74,144,226,0.1)', 
+                      color: '#4A90E2',
+                      fontWeight: 600,
+                      fontSize: 16
+                    }}>€</span>
+                    <input
+                      type="number"
+                      placeholder="Enter cargo value"
+                      value={declaredValue}
+                      onChange={e => setDeclaredValue(e.target.value)}
+                      style={{
+                        flex: 1,
+                        background: 'transparent',
+                        border: 'none',
+                        padding: '14px 16px',
+                        color: '#fff',
+                        fontSize: 15,
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Insurance Package Selection */}
+                <div style={{ marginBottom: 8 }}>
+                  <label style={{ 
+                    display: 'block', 
+                    fontSize: 13, 
+                    color: '#9BA8B9', 
+                    marginBottom: 12,
+                    fontWeight: 500
+                  }}>
+                    Select Coverage Package
+                  </label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {/* Basic Package */}
+                    <div
+                      onClick={() => setInsuranceType('basic')}
+                      style={{
+                        background: insuranceType === 'basic' 
+                          ? 'linear-gradient(135deg, rgba(78,205,196,0.12), rgba(78,205,196,0.05))'
+                          : '#0A1628',
+                        border: insuranceType === 'basic' 
+                          ? '2px solid #4ECDC4' 
+                          : '1px solid #2A3A4E',
+                        borderRadius: 14,
+                        padding: '16px 18px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        position: 'relative'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <div style={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: 10,
+                            background: insuranceType === 'basic' ? 'rgba(78,205,196,0.2)' : 'rgba(107,123,143,0.1)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <Shield size={18} color={insuranceType === 'basic' ? '#4ECDC4' : '#6B7B8F'} />
+                          </div>
+                          <div>
+                            <div style={{ 
+                              fontSize: 15, 
+                              fontWeight: 600, 
+                              color: insuranceType === 'basic' ? '#4ECDC4' : '#9BA8B9'
+                            }}>Basic</div>
+                            <div style={{ fontSize: 12, color: '#6B7B8F', marginTop: 2 }}>
+                              Essential coverage for standard shipments
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{
+                          width: 22,
+                          height: 22,
+                          borderRadius: 11,
+                          border: insuranceType === 'basic' ? '2px solid #4ECDC4' : '2px solid #3A4A5E',
+                          background: insuranceType === 'basic' ? '#4ECDC4' : 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          {insuranceType === 'basic' && <Check size={14} color="#0A1628" strokeWidth={3} />}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Standard Package */}
+                    <div
+                      onClick={() => setInsuranceType('standard')}
+                      style={{
+                        background: insuranceType === 'standard' 
+                          ? 'linear-gradient(135deg, rgba(74,144,226,0.15), rgba(74,144,226,0.05))'
+                          : '#0A1628',
+                        border: insuranceType === 'standard' 
+                          ? '2px solid #4A90E2' 
+                          : '1px solid #2A3A4E',
+                        borderRadius: 14,
+                        padding: '16px 18px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        position: 'relative'
+                      }}
+                    >
+                      {insuranceType === 'standard' && (
+                        <div style={{
+                          position: 'absolute',
+                          top: -8,
+                          right: 16,
+                          background: '#4A90E2',
+                          color: '#fff',
+                          fontSize: 10,
+                          fontWeight: 700,
+                          padding: '3px 8px',
+                          borderRadius: 6,
+                          textTransform: 'uppercase',
+                          letterSpacing: 0.5
+                        }}>Popular</div>
+                      )}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <div style={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: 10,
+                            background: insuranceType === 'standard' ? 'rgba(74,144,226,0.2)' : 'rgba(107,123,143,0.1)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <Award size={18} color={insuranceType === 'standard' ? '#4A90E2' : '#6B7B8F'} />
+                          </div>
+                          <div>
+                            <div style={{ 
+                              fontSize: 15, 
+                              fontWeight: 600, 
+                              color: insuranceType === 'standard' ? '#4A90E2' : '#9BA8B9'
+                            }}>Standard</div>
+                            <div style={{ fontSize: 12, color: '#6B7B8F', marginTop: 2 }}>
+                              Extended protection for higher-value cargo
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{
+                          width: 22,
+                          height: 22,
+                          borderRadius: 11,
+                          border: insuranceType === 'standard' ? '2px solid #4A90E2' : '2px solid #3A4A5E',
+                          background: insuranceType === 'standard' ? '#4A90E2' : 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          {insuranceType === 'standard' && <Check size={14} color="#fff" strokeWidth={3} />}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Premium Package */}
+                    <div
+                      onClick={() => setInsuranceType('premium')}
+                      style={{
+                        background: insuranceType === 'premium' 
+                          ? 'linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,183,71,0.08))'
+                          : '#0A1628',
+                        border: insuranceType === 'premium' 
+                          ? '2px solid #FFD700' 
+                          : '1px solid #2A3A4E',
+                        borderRadius: 14,
+                        padding: '16px 18px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <div style={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: 10,
+                            background: insuranceType === 'premium' ? 'rgba(255,215,0,0.2)' : 'rgba(107,123,143,0.1)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <Star size={18} color={insuranceType === 'premium' ? '#FFD700' : '#6B7B8F'} fill={insuranceType === 'premium' ? '#FFD700' : 'transparent'} />
+                          </div>
+                          <div>
+                            <div style={{ 
+                              fontSize: 15, 
+                              fontWeight: 600, 
+                              color: insuranceType === 'premium' ? '#FFD700' : '#9BA8B9'
+                            }}>Premium</div>
+                            <div style={{ fontSize: 12, color: '#6B7B8F', marginTop: 2 }}>
+                              Maximum protection & priority claim support
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{
+                          width: 22,
+                          height: 22,
+                          borderRadius: 11,
+                          border: insuranceType === 'premium' ? '2px solid #FFD700' : '2px solid #3A4A5E',
+                          background: insuranceType === 'premium' ? '#FFD700' : 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          {insuranceType === 'premium' && <Check size={14} color="#0A1628" strokeWidth={3} />}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Insurance Summary */}
+                {declaredValue && (
+                  <div style={{
+                    marginTop: 16,
+                    padding: '14px 16px',
+                    background: 'rgba(74,226,74,0.08)',
+                    border: '1px solid rgba(74,226,74,0.2)',
+                    borderRadius: 12,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10
+                  }}>
+                    <CheckCircle size={18} color="#4AE24A" />
+                    <div style={{ fontSize: 13, color: '#4AE24A' }}>
+                      <span style={{ fontWeight: 600 }}>€{parseFloat(declaredValue).toLocaleString()}</span> covered with <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{insuranceType}</span> protection
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 

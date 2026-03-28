@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -493,6 +494,17 @@ def generate_sample_requests(from_city: str, to_city: str, gaia_box_enabled: boo
 @api_router.get("/")
 async def root():
     return {"message": "GAIA Logistics API v2.0"}
+
+@api_router.get("/export")
+async def export_project_zip():
+    zip_path = ROOT_DIR / "gaia-marketplace.zip"
+    if not zip_path.exists():
+        raise HTTPException(status_code=404, detail="ZIP file not found")
+    return FileResponse(
+        path=str(zip_path),
+        filename="gaia-marketplace.zip",
+        media_type="application/zip"
+    )
 
 @api_router.get("/stats")
 async def get_stats():

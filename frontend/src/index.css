@@ -723,3 +723,25 @@ body {
   font-size: 13px;
   color: var(--text-secondary);
 }
+
+/* Insurance Section Animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.insurance-premium-section input[type="number"]::-webkit-inner-spin-button,
+.insurance-premium-section input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.insurance-premium-section input[type="number"] {
+  -moz-appearance: textfield;
+}
