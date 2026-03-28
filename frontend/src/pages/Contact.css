@@ -1,0 +1,175 @@
+.contact-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--bg-secondary);
+}
+
+.contact-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-left: 12px;
+}
+
+.contact-content {
+  padding: 20px;
+}
+
+.contact-success {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.success-icon {
+  margin-bottom: 16px;
+}
+
+.success-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.success-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.contact-card {
+  background-color: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.company-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.contact-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.contact-route-point {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.contact-route-arrow {
+  color: var(--text-secondary);
+}
+
+.contact-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #2A3A4E;
+}
+
+.price-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.price-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.contact-person-title {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.contact-person-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.contact-person-role {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.contact-action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.contact-action-btn.call {
+  background-color: rgba(74, 226, 74, 0.15);
+  color: var(--accent-green);
+}
+
+.contact-action-btn.email {
+  background-color: rgba(74, 144, 226, 0.15);
+  color: var(--accent-blue);
+}
+
+.contact-action-btn.message {
+  background-color: rgba(123, 104, 238, 0.15);
+  color: var(--accent-purple);
+}
+
+.contact-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: rgba(74, 144, 226, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.note-icon {
+  font-size: 20px;
+}
+
+.note-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.done-btn {
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--accent-blue);
+  border-radius: 14px;
+  padding: 18px;
+  color: var(--accent-blue);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+}
