@@ -1,0 +1,168 @@
+/* Contact Page - Premium Investor-Ready Design */
+
+.contact-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: rgba(26, 42, 62, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.contact-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-left: 16px;
+}
+
+.contact-content {
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Success Section */
+.contact-success {
+  text-align: center;
+  padding: 32px 20px;
+}
+
+.success-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  background: rgba(74, 226, 74, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.success-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Cards - Premium Glass Effect */
+.contact-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Route Summary */
+.contact-route-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.route-endpoint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.route-arrow {
+  color: var(--text-secondary);
+  font-size: 18px;
+}
+
+/* Price Summary */
+.contact-price-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.price-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4AE24A;
+}
+
+/* Insurance Badge */
+.insurance-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 16px;
+  background: rgba(74, 226, 74, 0.08);
+  border: 1px solid rgba(74, 226, 74, 0.2);
+  border-radius: 10px;
+  font-size: 13px;
+  color: #4AE24A;
+}
+
+/* Provider Card */
+.provider-card {
+  text-align: center;
+  border: 1px solid rgba(74, 226, 74, 0.15);
+}
+
+.provider-company {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.provider-match {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(74, 226, 74, 0.1);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4AE24A;
+}
+
+/* Proceed Button - Premium CTA */
+.proceed-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #4AE24A, #2bb673);
+  border: none;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(74, 226, 74, 0.35);
+  margin-top: 8px;
+}
+
+.proceed-btn:hover {
+  box-shadow: 0 10px 28px rgba(74, 226, 74, 0.45);
+}
+
+.proceed-btn:active {
+  transform: scale(0.98);
+}
